@@ -1,0 +1,31 @@
+name: README Build
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Run today.py
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          OWNER_ID: ${{ secrets.OWNER_ID }}
+        run: python today.py
+        
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Automated README update" || exit 0
+          git push
