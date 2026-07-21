@@ -26,7 +26,9 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           OWNER_ID: ${{ secrets.OWNER_ID }}
           USER_NAME: LarshVakil
-        run: python today.py
+        run: |
+          mkdir -p cache
+          python today.py
         
       - name: Commit and push changes
         run: |
